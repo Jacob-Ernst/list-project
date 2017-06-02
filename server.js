@@ -1,6 +1,24 @@
 const express = require('express');
 
+if (process.env.NODE_ENV !== 'production') {
+  const dotenv = require('dotenv');
+
+  dotenv.load();
+}
+
+const mongoose = require('mongoose');
+
 const app = express();
+
+
+mongoose.connect(process.env.DB_PATH);
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log(`Here is db`);
+  console.log(`${process.env.DB_PATH}`);
+});
 
 app.set('port', (process.env.PORT || 3001));
 
