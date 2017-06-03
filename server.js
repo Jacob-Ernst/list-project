@@ -23,6 +23,18 @@ db.once('open', function() {
   });
 
   var Item = mongoose.model('Item', itemSchema);
+
+  var testItem = new Item({ name: 'Much Item, such test' });
+
+  testItem.save(function (err, testItem) {
+    if (err) return console.error(err);
+    console.log(`Wow new Item`);
+  });
+
+  Item.find(function (err, items) {
+    if (err) return console.error(err);
+    console.log(items);
+  })
 });
 
 app.set('port', (process.env.PORT || 3001));
