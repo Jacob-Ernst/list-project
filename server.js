@@ -16,8 +16,13 @@ mongoose.connect(process.env.DB_PATH);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log(`Here is db`);
-  console.log(`${process.env.DB_PATH}`);
+  var itemSchema = mongoose.Schema({
+      name: String,
+      completed: {type: Boolean, default: false},
+      _itemId: {type: mongoose.Schema.Types.ObjectId, auto: true}
+  });
+
+  var Item = mongoose.model('Item', itemSchema);
 });
 
 app.set('port', (process.env.PORT || 3001));
