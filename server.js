@@ -2,42 +2,46 @@ const express = require('express');
 
 if (process.env.NODE_ENV !== 'production') {
   const dotenv = require('dotenv');
-
   dotenv.load();
 }
 
 const mongoose = require('mongoose');
-
 const app = express();
 
-
 mongoose.connect(process.env.DB_PATH);
-
 const db = mongoose.connection;
+
 db.on('error', console.error.bind(console, 'connection error:'));
+
 db.once('open', function() {
-  var itemSchema = mongoose.Schema({
+  const todoSchema = mongoose.Schema({
       name: String,
-      completed: {type: Boolean, default: false},
-      _itemId: {type: mongoose.Schema.Types.ObjectId, auto: true}
+      completed: {type: Boolean, default: false}
   });
 
-  var Item = mongoose.model('Item', itemSchema);
+  const TODO = mongoose.model('TODO', todoSchema);
 
-  var testItem = new Item({ name: 'Much Item, such test' });
+  // let testTODO = new TODO({ name: 'Much TODO, such test' });
 
-  testItem.save(function (err, testItem) {
-    if (err) return console.error(err);
-    console.log(`Wow new Item`);
-  });
+  // testTODO.save(function (err, testTODO) {
+  //   if (err) return console.error(err);
+  //   console.log(`Wow new TODO`);
+  // });
 
-  Item.find(function (err, items) {
-    if (err) return console.error(err);
-    console.log(items);
-  })
+  // TODO.find(function (err, todos) {
+  //   if (err) return console.error(err);
+  //   console.log(todos);
+  // });
 });
 
 app.set('port', (process.env.PORT || 3001));
+
+app.get("/api/todos", (req, res) => {
+  TODO.find(function (err, todos) {
+    if (err) return res.status(500).json(err);
+    res.json(todos);
+  });
+});
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
