@@ -7,7 +7,11 @@ class Item extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.editItem = this.editItem.bind(this);
     this.stopEditing = this.stopEditing.bind(this);
-    this.state = {editing: false, value: this.props.value}
+    this.state = {
+      editing: false,
+      completed: false,
+      name: this.props.name
+    }
   }
 
   handleDelete(event) {
@@ -15,7 +19,7 @@ class Item extends Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({name: event.target.value});
   }
 
   stopEditing(event) {
@@ -36,7 +40,7 @@ class Item extends Component {
     } else {
       return (
         <li>
-          <p onClick={this.editItem}>{this.state.value}</p>
+          <p onClick={this.editItem}>{this.state.name}</p>
           <button onClick={this.handleDelete}>-</button>
         </li>
       );

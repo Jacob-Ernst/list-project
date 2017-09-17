@@ -1,20 +1,33 @@
 import React, { Component } from 'react';
-import NewItemForm from './NewItemForm';
-import Item from './Item';
+import NewItem from './NewItem';
+import Client from './Client';
 import ItemList from './ItemList';
 
 class Todo extends Component {
   constructor(props) {
     super(props);
-    this.handleNewItemSubmit = this.handleNewItemSubmit.bind(this);
+    this.addItem = this.addItem.bind(this);
     this.handleItemDelete = this.handleItemDelete.bind(this);
-    this.state = {items: []};
+
+    this.state = {
+      items: []
+    };
   }
 
-  handleNewItemSubmit(value, id) {
+  componentDidMount() {
+    Client.getAll(res => {
+      this.setState({
+        items: res
+      });
+    });
+  }
+
+  addItem(name, id) {
     this.setState((prevState, props) => ({
       items: prevState.items.concat(
-        <Item key={id} id={id} value={value} onDelete={this.handleItemDelete}/>
+        {
+          name: name
+        }
       )
     }));
   }
@@ -32,8 +45,8 @@ class Todo extends Component {
   render() {
     return (
       <div>
-        <ItemList listItems={this.state.items}/>
-        <NewItemForm onSubmit={this.handleNewItemSubmit}/>
+        <ItemList items={this.state.items} onDelete={this.handleItemDelete}/>
+        <NewItem onSubmit={this.addItem}/>
       </div>
     );
   }
