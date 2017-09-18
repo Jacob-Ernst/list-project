@@ -6,5 +6,12 @@ module.exports = {
       if (err) return res.status(500).json(err);
       res.json(todos);
     });
+  },
+
+  create: (req, res) => {
+    Todo.find((err, todos) => {
+      if (err) return res.status(500).json(err);
+      res.json(todos);
+    });
   }
 }
