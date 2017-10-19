@@ -7,7 +7,7 @@ class Todo extends Component {
   constructor(props) {
     super(props);
     this.addItem = this.addItem.bind(this);
-    this.handleItemDelete = this.handleItemDelete.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
 
     this.state = {
       items: []
@@ -22,30 +22,30 @@ class Todo extends Component {
     });
   }
 
-  addItem(name, id) {
-    this.setState((prevState, props) => ({
-      items: prevState.items.concat(
-        {
-          name: name
-        }
-      )
-    }));
+  addItem(params) {
+    Client.create(params, (res) => {
+      this.setState((prevState, props) => ({
+        items: prevState.items.concat(res)
+      }));
+    });
   }
 
-  handleItemDelete(id) {
-    this.setState((prevState, props) => ({
-      items: prevState.items.filter(
-        (item) => {
-          return item.props.id !== id
-        }
-      )
-    }));
+  deleteItem(id) {
+    Client.destroy(id, (res) => {
+      this.setState((prevState, props) => ({
+        items: prevState.items.filter(
+          (item) => {
+            return item._id !== id;
+          }
+        )
+      }));
+    });
   }
 
   render() {
     return (
       <div>
-        <ItemList items={this.state.items} onDelete={this.handleItemDelete}/>
+        <ItemList items={this.state.items} onDelete={this.deleteItem}/>
         <NewItem onSubmit={this.addItem}/>
       </div>
     );

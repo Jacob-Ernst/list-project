@@ -13,7 +13,11 @@ class NewItem extends Component {
   }
 
   handleSubmit(event) {
-    this.props.onSubmit(this.state.name, this.state.nextItemId);
+    const params = {name: this.state.name};
+
+    this.props.onSubmit(params);
+    this.setState({name: ''});
+
     event.preventDefault();
   }
 

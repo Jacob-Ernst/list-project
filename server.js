@@ -3,6 +3,9 @@ const Todo = require('./models/Todo');
 const mongoose = require('mongoose');
 const routes = require('./routes');
 const app = express();
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 if (process.env.NODE_ENV !== 'production') {
   const dotenv = require('dotenv');
@@ -17,6 +20,8 @@ db.on('error', console.error.bind(console, 'connection error:'));
 app.set('port', (process.env.PORT || 3001));
 
 app.get("/api/todos", routes.index);
+app.post("/api/todos", routes.create);
+app.delete("/api/todos/:id", routes.destroy);
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
