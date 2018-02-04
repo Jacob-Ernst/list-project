@@ -42,10 +42,14 @@ class Todo extends Component {
     });
   }
 
+  updateItem(params) {
+    Client.update(params);
+  }
+
   render() {
     return (
       <div>
-        <ItemList items={this.state.items} onDelete={this.deleteItem}/>
+        <ItemList items={this.state.items} onDelete={this.deleteItem} onUpdate={this.updateItem}/>
         <NewItem onSubmit={this.addItem}/>
       </div>
     );

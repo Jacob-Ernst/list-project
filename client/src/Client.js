@@ -43,5 +43,16 @@ const destroy = (id, cb) => {
   .then(cb);
 }
 
-const Client = { getAll, create, destroy };
+const update = (params) => {
+  return fetch(`api/todos/${params.id}`, {
+    method: "PUT",
+    body: JSON.stringify(params),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(checkStatus);
+}
+
+const Client = { getAll, create, destroy, update };
 export default Client;

@@ -5,7 +5,7 @@ function ItemList(props) {
   return <ul>
             {
               props.items.map((item, index) =>
-                <Item key={index} item={item} onDelete={props.onDelete}/>
+                <Item key={index} item={item} onDelete={props.onDelete} onUpdate={props.onUpdate}/>
               )
             }
          </ul>;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MdRemoveCircleOutline from 'react-icons/lib/md/remove-circle-outline';
 
 class Item extends Component {
   constructor(props) {
@@ -9,23 +10,28 @@ class Item extends Component {
     this.stopEditing = this.stopEditing.bind(this);
     this.state = {
       editing: false,
-      completed: false,
-      item: this.props.item
+      params: { name: this.props.item.name, id: this.props.item._id }
     }
   }
 
   handleDelete(event) {
-    this.props.onDelete(this.state.item._id);
+    this.props.onDelete(this.props.item._id);
   }
 
-  handleInputChange(inputKey, newValue) {
-    let newItem = this.state.item;
-    newItem[inputKey] = newValue;
-    this.setState({item: newItem});
+  handleInputChange(event) {
+    let newParams = this.state.params;
+    newParams['name'] = event.target.value;
+    this.setState({params: newParams});
   }
 
   stopEditing(event) {
+    const params = this.state.params;
+    const item = this.props.item;
     this.setState({editing: false});
+
+    if (params.name !== item.name) {
+      this.props.onUpdate(params);
+    }
   }
 
   editItem(event) {
@@ -33,18 +39,19 @@ class Item extends Component {
   }
 
   render() {
-    const item = this.props.item;
+    const params = this.state.params;
+
     if (this.state.editing) {
       return (
         <li>
-          <input type="text" onChange={this.handleInputChange} onBlur={this.stopEditing}/>
+          <input type="text" value={params.name} onChange={this.handleInputChange} onBlur={this.stopEditing}/>
         </li>
       );
     } else {
       return (
         <li>
-          <p onClick={this.editItem}>{item.name}</p>
-          <button onClick={this.handleDelete}>-</button>
+          <p onClick={this.editItem}>{params.name}</p>
+          <MdRemoveCircleOutline onClick={this.handleDelete}/>
         </li>
       );
     }

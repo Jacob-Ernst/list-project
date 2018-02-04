@@ -22,6 +22,7 @@ app.set('port', (process.env.PORT || 3001));
 app.get("/api/todos", routes.index);
 app.post("/api/todos", routes.create);
 app.delete("/api/todos/:id", routes.destroy);
+app.put("/api/todos/:id", routes.update);
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {

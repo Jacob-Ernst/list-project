@@ -16,7 +16,6 @@ class NewItem extends Component {
     const params = {name: this.state.name};
 
     this.props.onSubmit(params);
-    this.setState({name: ''});
 
     event.preventDefault();
   }

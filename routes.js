@@ -25,5 +25,16 @@ module.exports = {
       res.status(204);
       res.json(todo);
     });
+  },
+
+  update: (req, res) => {
+    const update = {
+      name: req.body.name
+    };
+
+    Todo.findByIdAndUpdate(req.params.id, update, (err, todo) => {
+      if (err) return res.status(500).json(err);
+      res.json({});
+    });
   }
 }
